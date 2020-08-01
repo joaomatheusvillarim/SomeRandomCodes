@@ -1,4 +1,4 @@
-#is this a prime number?
+#print the divisors of a number
 
 x = int(input())
 i = 1
