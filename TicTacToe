@@ -1,0 +1,114 @@
+#tic tac toe
+import random
+field = [["1", "2", "3"], #This is our tic tac toe
+         ["4", "5", "6"],
+         ["7", "8", "9"]]
+willbreak = False #This will exit the whole game when someone wins or it's a draw
+name1 = input("Player 1, enter your name: ") #player 1
+name2 = input("Player 2, enter your name: ") #player 2
+call = input(name1 + ", heads or tails? ") #coin flip, player 1 calls
+coin = random.randint(0, 1) #result of the coin, 0 for heads, 1 for tails
+print("Rules: \n 1. If your answer is invalid, you lose your turn") #rules
+while True:
+    if call == "heads": #same call
+        if coin == 0:
+            print("It's... heads.", name1 + ", you'll go first")
+            break
+        else: #different call
+            print("It's... tails.", name2 + ", you'll go first")
+            name1, name2 = name2, name1
+            break
+    elif call == "tails":
+        if coin == 0: #different call
+            print("It's... heads.", name2 + ", you'll go first")
+            name1, name2 = name2, name1
+            break
+        else: #same call
+            print("It's... tails.", name1 + ", you'll go first")
+            break
+    else: #player didnt called it right
+        print("Call HEADS or TAILS.")
+        while True:
+            call = input(name1 + ", heads or tails? ")
+            coin = random.randint(0, 1)
+            if call == ("heads" or "tails"):
+                break
+
+while True:
+    for line in field: #X turn begins with the game being shown #X is player 1, the one who won the coin flip
+        print(line)
+    xinput = input(name1 + ", choose a box ") #X answer
+    if xinput == "break": #exit the game
+        break
+    for line in field: #modifying the tic tac toe with player 1 answer
+        if xinput in line: 
+            line[line.index(xinput)] = "X"
+    for line in field: #Horizontal win
+        if line.count("X") == 3: #If in a line there are 3 Xs, X wins the game
+            print(name1, "wins!")
+            willbreak = True
+    for indicie in range(0, len(field)): #Vertical win
+        xnumber = 0 #how many Xs are in a column
+        for line in field:
+            for element in line[indicie]: #we loop through just 1 element, the one with "indicie" index #indicie is pt-br for index
+                if element == "X":
+                    xnumber += 1
+            if xnumber == 3: #if there are 3 Xs in a column, X wins the game
+                print(name1, "wins!")
+    if (field[0][0], field[1][1], field[2][2]) == "X": #Diagonal win from left to right
+        print(name1, "wins!")
+        willbreak = True
+    if (field[0][2], field[1][1], field[2][0]) == "X": #Diagonal win from right to left
+        print(name1, "wins!")
+        willbreak = True
+    lettersnumber = 0 #how many letters are in the game
+    for line in field:
+        for element in line:
+            if element.isalpha():
+                lettersnumber += 1
+    if (lettersnumber == 9) and (willbreak == False): #if there are only numbers and the game hasn't been won, it's a draw
+        print("It´s a draw!")
+        willbreak = True
+    if willbreak == True: #this is for when x wins, it exits the game
+        for line in field:
+            print(line)
+        break
+    for line in field: #O turn begins #O is the player who lost coin flip
+        print(line)
+    oinput = input(name2 + ", choose a box ") #O answer
+    if oinput == "break": #exit the game
+        break
+    for line in field:
+        if oinput in line: #modifies the game with O's input
+            line[line.index(oinput)] = "O"
+    for line in field: #Horizontal win
+        if line.count("O") == 3: #If in a line there are 3 Os, he wins the game
+            print(name2, "wins!")
+            willbreak = True
+    for indicie in range(0, len(field)): #Vertical win
+        onumber = 0 #how many Os are in a column
+        for line in field:
+            for element in line[indicie]: #it loops only through one element with "indicie" index #"indicie" is pt-br for index 
+                if element == "O":
+                    onumber += 1
+            if onumber == 3: #if there are 3 Os in a column, O wins the game
+                print(name2, "wins!")
+                willbreak = True
+    if (field[0][0], field[1][1], field[2][2]) == "O": #Diagonal win from left to right
+        print(name2, "wins!")
+        willbreak = True
+    if (field[0][2], field[1][1], field[2][0]) == "O": #Diagonal win from right to left
+        print(name2, "wins!")
+        willbreak = True
+    lettersnumber = 0 #how many boxes in the game are letters
+    for line in field:
+        for element in line:
+            if element.isalpha():
+                lettersnumber += 1
+    if (lettersnumber == 9) and (willbreak == False): #if all the boxes are letters and the game hasn't been won, it's a draw
+        print("It´s a draw!")
+        willbreak = True
+    if willbreak == True: #this is for when O wins, it exits the game
+        for line in field:
+            print(line)
+        break
