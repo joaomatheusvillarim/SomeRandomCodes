@@ -1,4 +1,5 @@
-#that challenge
+#Ok I saw this challenge on Instagram and it's like: given a number, print all the numbers less 
+#than or equal to it whose adjacent digits doesn't have a difference greater than 1 (ex: 345, 11, 89)
 
 #receives input
 x = str(input())
