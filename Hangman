@@ -1,0 +1,109 @@
+import random
+videogames = "super mario world, halo, uncharted, league of legends, call of duty, red dead redemption, grand theft auto, the last of us, the legend of zelda, final fantasy, the witcher, assassin's creed, battlefield, fifa, just dance, gears of war, mario kart, gran turismo, undertale, stardew valley, overwatch, counter strike, skyrim, minecraft, terraria, doom".split(", ")
+cities = "sao paulo, rio de janeiro, new york, los angeles, paris, tokyo, rome, lisbon, shanghai, moscow, boston, ottawa, vancouver, london, bogota, hong kong, istanbul, beijing, seoul, jakarta, cairo, cidades del mexico, buenos aires, santiago, montevideo, lima, quito, madrid, cape town, berlin, prague, amsterdam, brussels, zurich".split(", ")
+bands = "the beatles, ac dc, metallica, slipknot, one direction, linkin park, queen, pink floyd, led zepellin, arctic monkeys, imagine dragons, muse, black sabbath, coldplay, iron maiden, nirvana, rolling stones, red hot chilli peppers, nickelback, my chemical romance, panic at the disco, black eyed peas, bon jovi, kiss, aerosmith".split(", ")
+soccerplayers = "pele, paqueta, mbappe, cristiano ronaldo, messi, pogba, iniesta, rooney, neymar, casemiro, kante, hazard, coutinho, ronaldinho, suarez, ibrahimovic, muller, drogba, aguero, kaka, rivaldo, griezmann, salah, gerrard, firmino, segio ramos, pique, azpilicueta, giroud, dembele, modric, alisson, marcelo, neuer, reus, ozil, de bruyne, sterling".split(", ")
+
+def askfortheme(): #working
+    global theme
+    global word
+    theme = input("Which theme would you like to play? \nThemes: Videogames, Cities, Bands, Soccer Players\n")
+    if theme == "videogames":
+        aleat = random.randint(0, len(videogames)-1)
+        word = videogames[aleat]
+    elif theme == "cities":
+        aleat = random.randint(0, len(cities)-1)
+        word = cities[aleat]
+    elif theme == "bands":
+        aleat = random.randint(0, len(bands)-1)
+        word = bands[aleat]
+    elif theme == "soccer players":
+        aleat = random.randint(0, len(soccerplayers)-1)
+        word = soccerplayers[aleat]
+    else:
+        print("Please enter a valid theme.")
+        askfortheme()
+
+def setup(): #working
+    global mistakes
+    mistakes = []
+    global nmis
+    nmis = 0
+    global gameword
+    global wordlist
+    wordlist = []
+    for x in word:
+        wordlist.append(x)
+    gameword = []
+    for letter in word:
+        if letter.isalpha():
+            gameword.append("_ ")
+        else:
+            gameword.append("  ")
+    global field
+    field = ["____", "|  ", "| ", "| ",]
+
+def correct(guess):
+    indexlist = []
+    indicie = 0
+    occurences = word.count(guess)
+    for x in range(occurences):
+        k = word.find(guess, indicie)
+        indexlist.append(k)
+        indicie = k+1
+    for x in indexlist:
+        global gameword
+        gameword[x] = gameword[x].replace("_", guess)
+
+def incorrect(guess):
+    mistakes.append(guess)
+    global nmis
+    global field
+    nmis += 1
+    if nmis == 1:
+        field = ["____", "|  O", "| ", "| ",]
+    if nmis == 2:
+        field = ["____", "|  O", "| /", "| ",]
+    if nmis == 3:
+        field = ["____", "|  O", "| /|", "| ",]
+    if nmis == 4:
+        field = ["____", "|  O", "| /|\\", "| ",]
+    if nmis == 5:
+        field = ["____", "|  O", "| /|\\", "| /",]
+    if nmis == 6:
+        field = ["____", "|  O", "| /|\\", "| / \\",]
+
+def playerguess():
+    global gameword
+    global nmis
+    global word
+    print("Theme:", theme)
+    for x in field:
+        print(x)
+    print("Incorrect letters:", mistakes)
+    print(''.join(gameword))
+    guess = input("Choose a letter\n")
+    if guess in wordlist:
+        correct(guess)
+        if gameword.count("_ ") == 0:
+            print("You win!")
+            stop = True
+        else:
+            stop = False
+    else:
+        if guess == word:
+            print("You win!")
+            stop = True
+        else:
+            incorrect(guess)
+            if nmis == 6:
+                print("You lose.")
+                stop = True
+            else:
+                stop = False
+    if stop == False:
+        playerguess()
+
+askfortheme()
+setup()
+playerguess()
